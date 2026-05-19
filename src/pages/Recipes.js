@@ -13,11 +13,18 @@ export default function Recipes() {
 
     const categories = ["All", "Breakfast", "Lunch", "Dinner", "snacks", "Desserts"];
 
-    // Load recipes from static JSON file
+    // Load recipes from static JSON file and localStorage
     useEffect(() => {
         try {
             setLoading(true);
-            setRecipes(recipeData.recipes);
+            // Get base recipes from JSON
+            const baseRecipes = recipeData.recipes;
+            
+            // Get user-added recipes from localStorage
+            const userRecipes = JSON.parse(localStorage.getItem("userRecipes") || "[]");
+            
+            // Combine both
+            setRecipes([...userRecipes, ...baseRecipes]);
         } catch (err) {
             setError("Failed to load recipes");
         } finally {

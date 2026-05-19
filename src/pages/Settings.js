@@ -1,8 +1,11 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import "../styles/Recipes.css";
 
 
 export default function Settings() {
+    const navigate = useNavigate();
+    
     // Existing functionality
     const [recipeSuggestions, setRecipeSuggestions] = useState("");
     const [pageSuggestions, setPageSuggestions] = useState("");
@@ -34,13 +37,33 @@ export default function Settings() {
     const [recipeImage, setRecipeImage] = useState("");
 
     const handleAddRecipe = () => {
+        // Create the new recipe object
+        const newRecipe = {
+            id: Date.now().toString(36) + Math.random().toString(36).substr(2),
+            title: recipeTitle,
+            description: recipeDescription,
+            category: recipeCategory,
+            ingredients: recipeIngredients.split("\n").filter(i => i.trim()),
+            steps: recipeSteps.split("\n").filter(s => s.trim()),
+            image: recipeImage || "/img/gallery/img_1.jpg"
+        };
+
+        // Get existing user recipes from localStorage
+        const existingRecipes = JSON.parse(localStorage.getItem("userRecipes") || "[]");
+        
+        // Add new recipe
+        existingRecipes.unshift(newRecipe); // Add to beginning of array
+        
+        // Save back to localStorage
+        localStorage.setItem("userRecipes", JSON.stringify(existingRecipes));
+        
         // Format the recipe details for display
-        const ingredientsList = recipeIngredients.split("\n").filter(i => i.trim()).map((ing, idx) => `  ${idx + 1}. ${ing}`).join("\n");
-        const stepsList = recipeSteps.split("\n").filter(s => s.trim()).map((step, idx) => `  ${idx + 1}. ${step}`).join("\n");
+        const ingredientsList = newRecipe.ingredients.map((ing, idx) => `  ${idx + 1}. ${ing}`).join("\n");
+        const stepsList = newRecipe.steps.map((step, idx) => `  ${idx + 1}. ${step}`).join("\n");
         
         const recipeDetails = `
 ╔════════════════════════════════════════╗
-║       RECIPE DETAILS SUMMARY          ║
+║    RECIPE ADDED SUCCESSFULLY! ✓       ║
 ╚════════════════════════════════════════╝
 
 📝 Title: ${recipeTitle}
@@ -53,14 +76,11 @@ ${ingredientsList}
 👨‍🍳 STEPS:
 ${stepsList}
 
-${recipeImage ? `🖼️ Image URL: ${recipeImage}` : '🖼️ Image: Not provided'}
+${recipeImage ? `🖼️ Image URL: ${recipeImage}` : '🖼️ Image: Default image used'}
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-ℹ️  NOTE: This is a static demo site.
-To permanently add this recipe:
-1. Open src/data/details.json
-2. Add this recipe to the "recipes" array
-3. Commit and push the changes
+✅ Your recipe has been saved!
+   Go to Recipes page to view it.
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
         `.trim();
         
@@ -73,6 +93,11 @@ To permanently add this recipe:
         setRecipeIngredients("");
         setRecipeSteps("");
         setRecipeImage("");
+        
+        // Ask if user wants to view recipes
+        if (window.confirm("Would you like to view your recipe now?")) {
+            navigate("/recipes");
+        }
     };
 
     return (

@@ -16,7 +16,16 @@ export default function RecipeDetails() {
         try {
             console.log("Loading recipe from static data...");
             
-            const foundRecipe = recipeData.recipes.find(
+            // Get base recipes from JSON
+            const baseRecipes = recipeData.recipes;
+            
+            // Get user-added recipes from localStorage
+            const userRecipes = JSON.parse(localStorage.getItem("userRecipes") || "[]");
+            
+            // Combine both
+            const allRecipes = [...userRecipes, ...baseRecipes];
+            
+            const foundRecipe = allRecipes.find(
                 (r) => r.title.toLowerCase() === decodeURIComponent(title).toLowerCase()
             );
 
