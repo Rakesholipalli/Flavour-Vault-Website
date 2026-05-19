@@ -57,35 +57,6 @@ export default function Settings() {
         // Save back to localStorage
         localStorage.setItem("userRecipes", JSON.stringify(existingRecipes));
         
-        // Format the recipe details for display
-        const ingredientsList = newRecipe.ingredients.map((ing, idx) => `  ${idx + 1}. ${ing}`).join("\n");
-        const stepsList = newRecipe.steps.map((step, idx) => `  ${idx + 1}. ${step}`).join("\n");
-        
-        const recipeDetails = `
-╔════════════════════════════════════════╗
-║    RECIPE ADDED SUCCESSFULLY! ✓       ║
-╚════════════════════════════════════════╝
-
-📝 Title: ${recipeTitle}
-📂 Category: ${recipeCategory}
-📄 Description: ${recipeDescription}
-
-🥘 INGREDIENTS:
-${ingredientsList}
-
-👨‍🍳 STEPS:
-${stepsList}
-
-${recipeImage.trim() ? `🖼️ Image URL: ${recipeImage}` : '🖼️ Image: Using placeholder image'}
-
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-✅ Your recipe has been saved!
-   Go to Recipes page to view it.
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-        `.trim();
-        
-        alert(recipeDetails);
-        
         // Clear form
         setRecipeTitle("");
         setRecipeDescription("");
@@ -95,7 +66,7 @@ ${recipeImage.trim() ? `🖼️ Image URL: ${recipeImage}` : '🖼️ Image: Usi
         setRecipeImage("");
         
         // Ask if user wants to view recipes
-        if (window.confirm("Would you like to view your recipe now?")) {
+        if (window.confirm(`Recipe "${recipeTitle}" added successfully!\n\nWould you like to view it now?`)) {
             navigate("/recipes");
         }
     };
