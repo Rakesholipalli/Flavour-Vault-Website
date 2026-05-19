@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { FaArrowLeft, FaPrint } from "react-icons/fa";
 import "../styles/Recipes.css";
+import recipeData from "../data/details.json";
 
 export default function RecipeDetails() {
     const { title } = useParams(); // Get recipe title from the URL
@@ -12,32 +13,21 @@ export default function RecipeDetails() {
     const [error, setError] = useState(null); // Error state
 
     useEffect(() => {
-        const fetchRecipe = async () => {
-            try {
-                console.log("Fetching recipes from the API...");
-                const response = await fetch("http://localhost:3031/recipes");
-                console.log("Response status:", response.status);
+        try {
+            console.log("Loading recipe from static data...");
+            
+            const foundRecipe = recipeData.recipes.find(
+                (r) => r.title.toLowerCase() === decodeURIComponent(title).toLowerCase()
+            );
 
-                if (!response.ok) throw new Error("Failed to fetch recipes");
-
-                const data = await response.json();
-                console.log("Fetched data:", data);
-
-                const foundRecipe = data.find(
-                    (r) => r.title.toLowerCase() === decodeURIComponent(title).toLowerCase()
-                );
-
-                if (!foundRecipe) throw new Error("Recipe not found");
-                setRecipe(foundRecipe);
-            } catch (err) {
-                console.error("Error fetching recipe:", err);
-                setError(err.message);
-            } finally {
-                setLoading(false);
-            }
-        };
-
-        fetchRecipe();
+            if (!foundRecipe) throw new Error("Recipe not found");
+            setRecipe(foundRecipe);
+        } catch (err) {
+            console.error("Error loading recipe:", err);
+            setError(err.message);
+        } finally {
+            setLoading(false);
+        }
     }, [title]);
 
     if (loading) return <p>Loading recipe...</p>;

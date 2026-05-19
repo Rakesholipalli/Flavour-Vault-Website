@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { FaSearch } from "react-icons/fa";
 import RecipeCard from "../components/RecipeCard";
 import "../styles/Recipes.css";
+import recipeData from "../data/details.json";
 
 export default function Recipes() {
     const [recipes, setRecipes] = useState([]);
@@ -12,22 +13,16 @@ export default function Recipes() {
 
     const categories = ["All", "Breakfast", "Lunch", "Dinner", "snacks", "Desserts"];
 
-    // Fetch recipes from the API
+    // Load recipes from static JSON file
     useEffect(() => {
-        const fetchRecipes = async () => {
-            try {
-                setLoading(true);
-                const response = await fetch("http://localhost:3031/recipes");
-                if (!response.ok) throw new Error("Failed to fetch recipes");
-                const data = await response.json();
-                setRecipes(data);
-            } catch (err) {
-                setError(err.message);
-            } finally {
-                setLoading(false);
-            }
-        };
-        fetchRecipes();
+        try {
+            setLoading(true);
+            setRecipes(recipeData.recipes);
+        } catch (err) {
+            setError("Failed to load recipes");
+        } finally {
+            setLoading(false);
+        }
     }, []);
 
     // Filter recipes based on search term and selected category

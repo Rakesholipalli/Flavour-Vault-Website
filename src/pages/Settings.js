@@ -43,27 +43,17 @@ export default function Settings() {
             image: recipeImage || "https://via.placeholder.com/150",
         };
 
-        try {
-            const response = await fetch("http://localhost:3031/recipes", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify(newRecipe),
-            });
-
-            if (!response.ok) throw new Error("Failed to add recipe");
-            alert("Recipe added successfully!");
-
-            // Clear form
-            setRecipeTitle("");
-            setRecipeDescription("");
-            setRecipeCategory("Breakfast");
-            setRecipeIngredients("");
-            setRecipeSteps("");
-            setRecipeImage("");
-        } catch (error) {
-            console.error("Error adding recipe:", error);
-            alert("Failed to add recipe. Please try again.");
-        }
+        // Note: This is a static site. Recipe data is stored in src/data/details.json
+        // To add recipes, you'll need to manually update the JSON file
+        alert("Note: This is a demo. To add recipes permanently, update src/data/details.json file.");
+        
+        // Clear form
+        setRecipeTitle("");
+        setRecipeDescription("");
+        setRecipeCategory("Breakfast");
+        setRecipeIngredients("");
+        setRecipeSteps("");
+        setRecipeImage("");
     };
 
     return (
