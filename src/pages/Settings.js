@@ -34,10 +34,37 @@ export default function Settings() {
     const [recipeImage, setRecipeImage] = useState("");
 
     const handleAddRecipe = () => {
-        // Note: This is a static site. Recipe data is stored in src/data/details.json
-        // To add recipes, you'll need to manually update the JSON file
-        const recipeInfo = `Recipe: ${recipeTitle}\nCategory: ${recipeCategory}\nDescription: ${recipeDescription}`;
-        alert(`Note: This is a demo. To add recipes permanently, update src/data/details.json file.\n\n${recipeInfo}`);
+        // Format the recipe details for display
+        const ingredientsList = recipeIngredients.split("\n").filter(i => i.trim()).map((ing, idx) => `  ${idx + 1}. ${ing}`).join("\n");
+        const stepsList = recipeSteps.split("\n").filter(s => s.trim()).map((step, idx) => `  ${idx + 1}. ${step}`).join("\n");
+        
+        const recipeDetails = `
+╔════════════════════════════════════════╗
+║       RECIPE DETAILS SUMMARY          ║
+╚════════════════════════════════════════╝
+
+📝 Title: ${recipeTitle}
+📂 Category: ${recipeCategory}
+📄 Description: ${recipeDescription}
+
+🥘 INGREDIENTS:
+${ingredientsList}
+
+👨‍🍳 STEPS:
+${stepsList}
+
+${recipeImage ? `🖼️ Image URL: ${recipeImage}` : '🖼️ Image: Not provided'}
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+ℹ️  NOTE: This is a static demo site.
+To permanently add this recipe:
+1. Open src/data/details.json
+2. Add this recipe to the "recipes" array
+3. Commit and push the changes
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+        `.trim();
+        
+        alert(recipeDetails);
         
         // Clear form
         setRecipeTitle("");
