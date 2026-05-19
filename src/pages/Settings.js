@@ -45,7 +45,7 @@ export default function Settings() {
             category: recipeCategory,
             ingredients: recipeIngredients.split("\n").filter(i => i.trim()),
             steps: recipeSteps.split("\n").filter(s => s.trim()),
-            image: recipeImage || "/img/gallery/img_1.jpg"
+            image: recipeImage.trim() || "https://via.placeholder.com/400x300/FF5733/FFFFFF?text=Recipe+Image"
         };
 
         // Get existing user recipes from localStorage
@@ -76,7 +76,7 @@ ${ingredientsList}
 👨‍🍳 STEPS:
 ${stepsList}
 
-${recipeImage ? `🖼️ Image URL: ${recipeImage}` : '🖼️ Image: Default image used'}
+${recipeImage.trim() ? `🖼️ Image URL: ${recipeImage}` : '🖼️ Image: Using placeholder image'}
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 ✅ Your recipe has been saved!
