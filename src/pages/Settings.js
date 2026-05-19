@@ -33,19 +33,11 @@ export default function Settings() {
     const [recipeSteps, setRecipeSteps] = useState("");
     const [recipeImage, setRecipeImage] = useState("");
 
-    const handleAddRecipe = async () => {
-        const newRecipe = {
-            title: recipeTitle,
-            description: recipeDescription,
-            category: recipeCategory,
-            ingredients: recipeIngredients.split("\n"),
-            steps: recipeSteps.split("\n"),
-            image: recipeImage || "https://via.placeholder.com/150",
-        };
-
+    const handleAddRecipe = () => {
         // Note: This is a static site. Recipe data is stored in src/data/details.json
         // To add recipes, you'll need to manually update the JSON file
-        alert("Note: This is a demo. To add recipes permanently, update src/data/details.json file.");
+        const recipeInfo = `Recipe: ${recipeTitle}\nCategory: ${recipeCategory}\nDescription: ${recipeDescription}`;
+        alert(`Note: This is a demo. To add recipes permanently, update src/data/details.json file.\n\n${recipeInfo}`);
         
         // Clear form
         setRecipeTitle("");
